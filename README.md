@@ -10,6 +10,45 @@ A Python script that automatically creates slideshow videos from a collection of
 - **Configurable Duration**: Set custom display duration for images
 - **High Quality Output**: Produces 1920x1080 MP4 videos with H.264 encoding
 
+## Prerequisites
+
+### Installing pyenv (Python Version Manager)
+
+**macOS (using Homebrew):**
+```bash
+brew install pyenv
+```
+
+**Linux:**
+```bash
+curl https://pyenv.run | bash
+```
+
+**Windows:**
+```bash
+# Install pyenv-win via pip
+pip install pyenv-win
+```
+
+### Setting up pyenv
+
+Add pyenv to your shell configuration:
+
+**For bash/zsh (add to `~/.bashrc` or `~/.zshrc`):**
+```bash
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init --path)"
+eval "$(pyenv init -)"
+```
+
+**For Windows (add to PowerShell profile):**
+```powershell
+# Add pyenv-win to PATH
+$env:PYENV_ROOT = "$env:USERPROFILE\.pyenv"
+$env:PATH = "$env:PYENV_ROOT\bin;$env:PATH"
+```
+
 ## Installation
 
 1. **Clone the repository**:
@@ -18,15 +57,83 @@ A Python script that automatically creates slideshow videos from a collection of
    cd stitches
    ```
 
-2. **Create a virtual environment** (recommended):
+2. **Install Python version** (optional - pyenv recommended):
    ```bash
-   python -m venv stitch-env
-   source stitch-env/bin/activate  # On Windows: stitch-env\Scripts\activate
+   # Install Python 3.13.0 or higher (3.13.5 recommended)
+   pyenv install 3.13.5
    ```
 
-3. **Install dependencies**:
+3. **Create a virtual environment**:
+   ```bash
+   python -m venv stitch-env
+   ```
+
+4. **Activate the virtual environment**:
+   ```bash
+   # On macOS/Linux:
+   source stitch-env/bin/activate
+   
+   # On Windows:
+   stitch-env\Scripts\activate
+   ```
+
+5. **Install dependencies**:
    ```bash
    pip install -r requirements.txt
+   ```
+
+## Auto-Activation Setup (Optional but Recommended)
+
+To automatically activate the virtual environment when you enter the project directory:
+
+### Using pyenv-virtualenv (Recommended)
+
+1. **Install pyenv-virtualenv**:
+   ```bash
+   # macOS
+   brew install pyenv-virtualenv
+   
+   # Linux
+   git clone https://github.com/pyenv/pyenv-virtualenv.git $(pyenv root)/plugins/pyenv-virtualenv
+   ```
+
+2. **Add to your shell configuration** (`~/.bashrc` or `~/.zshrc`):
+   ```bash
+   eval "$(pyenv virtualenv-init -)"
+   ```
+
+3. **Create a virtual environment with pyenv**:
+   ```bash
+   pyenv virtualenv 3.13.5 stitches-env
+   ```
+
+4. **Set local virtual environment**:
+   ```bash
+   pyenv local stitches-env
+   ```
+
+Now the virtual environment will automatically activate when you enter the project directory!
+
+### Alternative: Using direnv
+
+1. **Install direnv**:
+   ```bash
+   # macOS
+   brew install direnv
+   
+   # Linux
+   sudo apt install direnv  # Ubuntu/Debian
+   ```
+
+2. **Add to your shell configuration**:
+   ```bash
+   eval "$(direnv hook bash)"  # or zsh
+   ```
+
+3. **Create `.envrc` file in project root**:
+   ```bash
+   echo "source stitch-env/bin/activate" > .envrc
+   direnv allow
    ```
 
 ## Usage
@@ -92,26 +199,61 @@ stitches/
 
 ### Common Issues
 
-1. **"No module named 'moviepy'"**: Make sure you've installed the requirements:
+1. **"No module named 'moviepy'"**: Make sure you've activated the virtual environment and installed requirements:
    ```bash
+   source stitch-env/bin/activate  # or use auto-activation
    pip install -r requirements.txt
    ```
 
-2. **Large file sizes**: The script processes media at full quality. Consider compressing your source files if output size is a concern.
+2. **pyenv not found**: Ensure pyenv is properly installed and configured in your shell:
+   ```bash
+   pyenv --version
+   ```
 
-3. **Slow processing**: Video processing can be resource-intensive. The script processes files sequentially for memory efficiency.
+3. **Python version issues**: Check your Python version:
+   ```bash
+   python --version
+   pyenv version
+   ```
+
+4. **Large file sizes**: The script processes media at full quality. Consider compressing your source files if output size is a concern.
+
+5. **Slow processing**: Video processing can be resource-intensive. The script processes files sequentially for memory efficiency.
 
 ### Performance Tips
 
 - Use compressed video formats (H.264) for faster processing
 - Consider reducing image resolution if processing speed is important
 - Ensure sufficient disk space for the output video
+- Use pyenv-virtualenv for better environment management
 
 ## Dependencies
 
+- **Python**: 3.13+ (managed by pyenv)
 - **MoviePy**: Video editing and processing
 - **NumPy**: Numerical operations
 - **Pillow**: Image processing
+
+## Development
+
+### Setting up for development
+
+1. **Fork the repository**
+2. **Create a feature branch**:
+   ```bash
+   git checkout -b feature/your-feature-name
+   ```
+3. **Make your changes**
+4. **Test your changes**:
+   ```bash
+   python stitch_media.py
+   ```
+5. **Commit and push**:
+   ```bash
+   git add .
+   git commit -m "Add your feature description"
+   git push origin feature/your-feature-name
+   ```
 
 ## License
 
@@ -124,4 +266,5 @@ Feel free to submit issues, feature requests, or pull requests to improve this p
 ## Version History
 
 - **v1.0**: Initial release with basic slideshow functionality
-- **v2.0**: Updated for MoviePy v2.x compatibility with improved aspect ratio handling 
+- **v2.0**: Updated for MoviePy v2.x compatibility with improved aspect ratio handling
+- **v2.1**: Added pyenv support and auto-activation instructions 

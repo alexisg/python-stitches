@@ -1,3 +1,4 @@
+import sys
 import os
 from moviepy import (
     ImageClip,
@@ -6,6 +7,12 @@ from moviepy import (
 )
 from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
 from moviepy import ColorClip
+
+# Check Python version
+if sys.version_info < (3, 13, 0):
+    print(f"Error: Python 3.13.0 or higher is required. You are using Python {sys.version}")
+    print("Please upgrade your Python version or use pyenv to install Python 3.13+")
+    sys.exit(1)
 
 # --- CONFIGURATION ---
 FOLDER_PATH = "./media"   # Change to your media folder

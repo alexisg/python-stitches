@@ -1,3 +1,11 @@
+# Python version requirement
+# Python 3.13.0+ required (checked automatically by stitch_media.py)
+# Any Python 3.13.x version will work (3.13.0, 3.13.5, etc.)
+
+# Core dependencies
 moviepy>=2.0.0
 numpy>=1.21.0
-Pillow>=8.0.0 
+Pillow>=8.0.0
+
+# Optional: For better performance
+# imageio-ffmpeg>=0.4.8  # Uncomment if you need specific ffmpeg handling 
