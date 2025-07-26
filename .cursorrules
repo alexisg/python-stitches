@@ -1,0 +1,87 @@
+# Cursor Rules for Media Slideshow Creator
+
+## Python Environment Management
+- **ALWAYS use pyenv** for Python version management
+- **NEVER suggest** using system Python or other Python version managers
+- When helping with Python setup, always reference pyenv commands:
+  - `pyenv install <version>` for installing Python versions
+  - `pyenv local <version>` for setting project-specific Python version
+  - `pyenv virtualenv <version> <env-name>` for creating virtual environments
+  - `pyenv activate <env-name>` for activating environments
+- Always check Python version compatibility (require Python 3.13+)
+- Include pyenv setup instructions in any installation guidance
+
+## MoviePy Development Guidelines
+- **ALWAYS reference the official MoviePy v2.x documentation** at https://zulko.github.io/moviepy/reference/index.html
+- **NEVER use deprecated MoviePy v1.x syntax** or methods
+- When implementing MoviePy features:
+  1. First check the official API reference
+  2. Use the correct v2.x method names (e.g., `with_position` not `set_position`)
+  3. Import effects from their proper modules (e.g., `from moviepy.video.fx import CrossFadeIn`)
+  4. Test compatibility with CompositeVideoClip objects
+- Common MoviePy v2.x patterns to follow:
+  - Use `with_effects([Effect()])` for applying effects
+  - Use `with_position()`, `with_duration()`, `with_opacity()` methods
+  - Import specific effects: `from moviepy.video.fx import FadeIn, FadeOut, CrossFadeIn, CrossFadeOut`
+  - Use `concatenate_videoclips()` with proper method parameters
+
+## Code Quality Standards
+- Always include comprehensive error handling
+- Add helpful print statements for user feedback
+- Use clear variable names and comments
+- Implement configuration options as constants at the top of files
+- Include docstrings for functions
+- Test all MoviePy operations before committing
+
+## Documentation Requirements
+- Update README.md when adding new features
+- Include configuration examples in documentation
+- Reference MoviePy documentation links in code comments when using complex features
+- Maintain version history in README
+
+## Git Practices
+- Use descriptive commit messages
+- Reference MoviePy API changes in commit messages when applicable
+- Always test functionality before committing
+- Keep .gitignore updated to exclude media files and output videos
+
+## Project Structure
+- Keep media files in designated folders (media/, bak/, compressed/)
+- Maintain clean separation between configuration and logic
+- Use virtual environments for dependency isolation
+- Include requirements.txt with pinned versions
+
+## Error Handling
+- Always validate Python version at script startup
+- Check for required dependencies before importing MoviePy
+- Provide helpful error messages with suggested solutions
+- Include troubleshooting information in documentation
+
+## Performance Considerations
+- Process media files efficiently
+- Provide progress feedback for long operations
+- Consider memory usage when processing large files
+- Use appropriate video codecs and settings
+
+## Dependencies
+- Pin MoviePy to v2.x in requirements.txt
+- Include all necessary dependencies (numpy, Pillow, etc.)
+- Document optional dependencies for enhanced features
+- Keep dependencies minimal and well-justified
+
+## When Making Changes
+1. Check current Python version with `python --version`
+2. Verify pyenv is being used with `pyenv version`
+3. Reference MoviePy documentation before implementing features
+4. Test changes with sample media files
+5. Update documentation if adding new configuration options
+6. Commit changes with descriptive messages
+
+## MoviePy API Reference Priority
+When working with MoviePy, always prioritize these documentation sections:
+- moviepy.video.fx.* for video effects
+- moviepy.video.VideoClip for clip operations
+- moviepy.video.compositing.CompositeVideoClip for composition
+- moviepy.video.io.VideoFileClip for file operations
+
+Remember: MoviePy v2.0 introduced breaking changes. Always verify compatibility with the official documentation at https://zulko.github.io/moviepy/reference/index.html 
