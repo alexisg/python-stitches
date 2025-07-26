@@ -7,6 +7,7 @@ from moviepy import (
 )
 from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
 from moviepy import ColorClip
+from moviepy.video.fx import CrossFadeIn, CrossFadeOut
 
 # Check Python version
 if sys.version_info < (3, 13, 0):
@@ -18,6 +19,8 @@ if sys.version_info < (3, 13, 0):
 FOLDER_PATH = "./media"   # Change to your media folder
 IMAGE_DURATION = 15       # Seconds
 FADE_DURATION = 1.0       # Crossfade duration
+CROSSFADE_ENABLED = True  # Enable/disable crossfades between clips
+CROSSFADE_DURATION = 3.0  # Crossfade duration in seconds
 OUTPUT_FILE = "output_video.mp4"
 RESOLUTION = (1920, 1080) # Desired resolution (optional)
 # ----------------------
@@ -27,6 +30,8 @@ def is_image(file):
 
 def is_video(file):
     return file.lower().endswith(('.mp4', '.mov', '.avi', '.mkv'))
+
+
 
 def get_media_clips(folder):
     media_files = sorted(os.listdir(folder))
@@ -63,10 +68,49 @@ def get_media_clips(folder):
 def concatenate_clips(clips):
     if not clips:
         return None
-    return concatenate_videoclips(clips)
+    
+    if not CROSSFADE_ENABLED or len(clips) <= 1:
+        return concatenate_videoclips(clips)
+    
+    # Apply crossfade effects to clips
+    processed_clips = []
+    
+    for i, clip in enumerate(clips):
+        current_clip = clip
+        
+        # Calculate crossfade duration (don't exceed half the clip duration)
+        crossfade_duration = min(CROSSFADE_DURATION, current_clip.duration / 2)
+        
+        if i == 0:
+            # First clip: only fade out at the end
+            if crossfade_duration > 0 and len(clips) > 1:
+                current_clip = current_clip.with_effects([CrossFadeOut(crossfade_duration)])
+        elif i == len(clips) - 1:
+            # Last clip: only fade in at the beginning
+            if crossfade_duration > 0:
+                current_clip = current_clip.with_effects([CrossFadeIn(crossfade_duration)])
+        else:
+            # Middle clips: fade in at beginning and fade out at end
+            if crossfade_duration > 0:
+                current_clip = current_clip.with_effects([
+                    CrossFadeIn(crossfade_duration),
+                    CrossFadeOut(crossfade_duration)
+                ])
+        
+        processed_clips.append(current_clip)
+    
+    print(f"Applying crossfade with duration: {crossfade_duration} seconds")
+    
+    # Use concatenate_videoclips with method="compose" and negative padding for overlaps
+    return concatenate_videoclips(processed_clips, method="compose", padding=-crossfade_duration)
 
 if __name__ == "__main__":
     print("Processing media...")
+    if CROSSFADE_ENABLED:
+        print(f"Crossfade enabled: {CROSSFADE_DURATION} seconds")
+    else:
+        print("Crossfade disabled")
+    
     clips = get_media_clips(FOLDER_PATH)
     final_clip = concatenate_clips(clips)
 

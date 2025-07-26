@@ -8,6 +8,7 @@ A Python script that automatically creates slideshow videos from a collection of
 - **Aspect Ratio Preservation**: Automatically resizes media to fit the target resolution without distortion
 - **Smart Centering**: Centers all media on a black background, supporting both portrait and landscape orientations
 - **Configurable Duration**: Set custom display duration for images
+- **Crossfade Effects**: Smooth transitions between clips with configurable duration
 - **High Quality Output**: Produces 1920x1080 MP4 videos with H.264 encoding
 
 ## Prerequisites
@@ -161,6 +162,8 @@ Edit the configuration section in `stitch_media.py` to customize your slideshow:
 FOLDER_PATH = "./media"   # Change to your media folder
 IMAGE_DURATION = 15       # Seconds to display each image
 FADE_DURATION = 1.0       # Crossfade duration (currently disabled)
+CROSSFADE_ENABLED = True  # Enable/disable crossfades between clips
+CROSSFADE_DURATION = 3.0  # Crossfade duration in seconds
 OUTPUT_FILE = "output_video.mp4"
 RESOLUTION = (1920, 1080) # Target resolution
 # ----------------------
@@ -170,6 +173,8 @@ RESOLUTION = (1920, 1080) # Target resolution
 
 - **FOLDER_PATH**: Directory containing your media files
 - **IMAGE_DURATION**: How long to display each image (videos play at full length)
+- **CROSSFADE_ENABLED**: Enable or disable crossfade effects between clips (default: True)
+- **CROSSFADE_DURATION**: Duration of crossfade effects in seconds (default: 3.0)
 - **OUTPUT_FILE**: Name of the output video file
 - **RESOLUTION**: Target resolution for the slideshow (width, height)
 
